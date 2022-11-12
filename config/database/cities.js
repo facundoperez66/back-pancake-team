@@ -85,8 +85,8 @@ let cities = [
 
 
 require("dotenv").config();
-require("../../config/database");
-const city = require("../city");
+require("../database");
+const city = require("../../models/city");
 
 cities.forEach((element) => {
     city.create({
