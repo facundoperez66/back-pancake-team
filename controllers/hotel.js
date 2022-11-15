@@ -46,6 +46,33 @@ const controller = {
         }
     },
 
+    readOne: async (req, res) => {
+
+        let { id } = req.params
+
+        try {
+            let hotel = await Hotel.findOne({ _id: id }).populate({ path: 'userId', select: 'name photo -_id' });
+
+            if (hotel) {
+                res.status(200).json({
+                    success: true,
+                    message: 'Hotel found!',
+                    data: hotel,
+                });
+            } else {
+                res.status(404).json({
+                    success: false,
+                    message: 'Hotel not found!',
+                });
+            }
+        } catch (error) {
+            res.status(400).json({
+                success: false,
+                message: error.message,
+            });
+        }
+    },
+
     update: async (req,res) => {
         let { id } = req.params
         try{
