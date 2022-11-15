@@ -15,7 +15,7 @@ let hotels = [
         "photo": ["https://www.tripsavvy.com/thmb/mzH-Qot3CPBfG7Fyj_gyAnSk2uo=/5323x3460/filters:fill(auto,1)/the-palm-jumeirah-and-atlantis-hotel-in-dubai--614620458-5c89343cc9e77c0001423014.jpg",
                 "https://th.bing.com/th/id/R.44ea8e4f7e322a36657e4270c6c85947?rik=K97kFUl7c05eyw&pid=ImgRaw&r=0",
                 "https://i.pinimg.com/originals/fc/0e/67/fc0e672a8207e855e3dbeaf87c96f103.jpg"],
-       " capacity": "10000",
+       "capacity": "5000",
         "citiId": "637084d4caa81e856ac3012e",
         "userId": "636fe5cd55d86e11bfaebc4a"
     },{

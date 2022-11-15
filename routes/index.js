@@ -12,8 +12,8 @@ let show = require ('./show')
 router.use("/api/cities", city);
 router.use('/api/itineraries', itinerary)
 router.use('/api/user', user)
-router.use('/api/hotel',hotel)
-router.use('/api/show', show)
+router.use('/api/hotels',hotel)
+router.use('/api/shows', show)
 
 
 module.exports = router;
