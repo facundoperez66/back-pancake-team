@@ -39,7 +39,7 @@ const controller = {
 
         try {
             let allCities = await City.find(query);
-            if (allCities.length>0) {
+            if (allCities) {
                 res.status(200).json({
                     success: true,
                     message: 'All cities',
