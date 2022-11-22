@@ -8,6 +8,7 @@ const controller = {
                 id: new_city._id,
                 success: true,
                 message: 'City created',
+                new_city,
             });
         } catch (error) {
             res.status(400).json({
@@ -131,11 +132,3 @@ const controller = {
 }
 
 module.exports = controller
-
-
-
-
-
-
-
-
