@@ -9,6 +9,12 @@ const controller = {
                 cityId: req.query.cityId
             };
         }
+        if (req.query.userId) {
+            query = {
+                userId: req.query.userId
+            };
+        }
+
 
         try {
             let allItineraries = await Itinerary.find(query);
@@ -28,6 +34,7 @@ const controller = {
             res.status(400).json({
                 success: false,
                 message: error.message,
+                data: []
             });
         }
     },
