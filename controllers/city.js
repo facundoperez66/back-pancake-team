@@ -31,10 +31,15 @@ const controller = {
                 name: { $regex: req.query.name, $options: 'i' },
             };
         }
+        if (req.query.userId) {
+            query = {
+                userId: req.query.userId
+            };
+        }
 
         try {
             let allCities = await City.find(query);
-            if (allCities) {
+            if (allCities.length>0) {
                 res.status(200).json({
                     success: true,
                     message: 'All cities',
@@ -44,6 +49,7 @@ const controller = {
                 res.status(404).json({
                     success: false,
                     message: 'No cities found',
+                    data: [],
                 });
             }
         } catch (error) {
@@ -118,7 +124,7 @@ const controller = {
             }else{
                 res.status(404).json({
                     success: false,
-                    message: 'User not found!',
+                    message: 'city not found!',
                 });
             }
     }catch (error) {
