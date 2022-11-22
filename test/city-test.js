@@ -36,7 +36,7 @@ describe('Cities', function (done) {
                 done();
             });
     })
-    it('Verify that returns success false when unable to create a hotel', function (done) {
+    it('Verify that returns success false when unable to create a city', function (done) {
         request(app)
             .post(`/api/cities/`)
             .send({

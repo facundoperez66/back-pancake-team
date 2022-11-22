@@ -3,7 +3,7 @@ const validator = require("../middlewares/validator")
 const schema = require("../schemas/newCity")
 
 
-let { create, read, readOne, update, destroyOne } = require('../controllers/city');
+let { create, read, readOne, update, destroyOne, readAdminCities } = require('../controllers/city');
 
 
 router.route("/")
