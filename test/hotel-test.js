@@ -2,7 +2,7 @@ const app = require('../app');
 const chai = require('chai')
 const assert = chai.assert
 const request = require('supertest')
-const {expect} = require('chai')
+
 
 describe('hotels',function(done){
     
@@ -25,7 +25,7 @@ describe('hotels',function(done){
             "https://th.bing.com/th/id/OIP.kIiyzIjCMBpSVIEIVZtL9wHaFj?pid=ImgDet&rs=1",
             "https://media.cntraveler.com/photos/5ceda2158ce15e4031f372df/master/w_1200,c_limit/The-Principal-Madrid-Hotel_201929_Solarium.jpg",
             ],
-            'capacity':3500,
+            'capacity': 3500,
             'cityId':'637084d4caa81e856ac30130',
             'userId':'636fe5cd55d86e11bfaebc4a',
         })
@@ -47,7 +47,7 @@ describe('hotels',function(done){
             "https://th.bing.com/th/id/OIP.kIiyzIjCMBpSVIEIVZtL9wHaFj?pid=ImgDet&rs=1",
             "https://media.cntraveler.com/photos/5ceda2158ce15e4031f372df/master/w_1200,c_limit/The-Principal-Madrid-Hotel_201929_Solarium.jpg",
             ],
-            'capacity':3500,
+            'capacity': 3500,
             'cityId':'637084d4caa81e856ac30130',
             'userId':'636fe5cd55d86e11bfaebc4a',
         })

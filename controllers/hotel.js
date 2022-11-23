@@ -6,14 +6,15 @@ const controller = {
             let new_hotel = await Hotel.create(req.body)
             res.status(201).json({
                 id: new_hotel._id,
-                succes: true,
+                success: true,
                 message: "the hotel was successfully created",
+                new_hotel
             })
         } catch(error) {
             res.status(400).json({
-                succes: false,
+                success: false,
                 message: error.message,
-                new_hotel
+                
             })
 
         }
