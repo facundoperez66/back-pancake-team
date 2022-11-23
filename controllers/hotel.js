@@ -12,7 +12,8 @@ const controller = {
         } catch(error) {
             res.status(400).json({
                 succes: false,
-                message: error.message
+                message: error.message,
+                new_hotel
             })
 
         }
@@ -23,26 +24,39 @@ const controller = {
         let query = {}
         let order = {}
 
-        if(req.query.name){
-            query = { name: req.query.name}
+        if (req.query.name) {
+            query = {
+                ...query,
+                name: { $regex: req.query.name, $options: 'i' },
+            };
         }
-        if(req.query.order){
-            order = {capacity : req.query.order}
+        if (req.query.order) {
+            order = { name: req.query.order }
+        }
+        if (req.query.userId){
+            query = {userId: req.query.userId}
         }
 
-        try{
-            let all = await Hotel.find(query).sort(order)
-            res.status(200).json({
-                response: all,
-                succes: true,
-                message: "hotels were found",
-            })
+        try {
+            let allHotels = await Hotel.find(query).sort(order)
+            if (allHotels.length > 0) {
+                res.status(200).json({
+                    response: allHotels,
+                    success: true,
+                    message: "all hotels have been found"
+                })
+            } else {
+                res.status(404).json({
+                    response: [],
+                    success: false,
+                    message: "hotels not found",
+                })
+            }
         } catch (error) {
             res.status(400).json({
-                succes: false,
+                success: false,
                 message: error.message
             })
-
         }
     },
 
