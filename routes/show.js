@@ -1,9 +1,10 @@
-let router = require('express').Router()
+let router = require('express').Router();
 
-let { create,update,read,destroy } = require ('../controllers/show')
+let {create, read, update, destroyOne} = require('../controllers/show');
 
-router.post('/',create)
-router.patch('/:id',update)
-router.get('/',read)
-router.delete('/:id',destroy)
+router.post('/', create);
+router.get('/', read);
+router.patch('/:id', update);
+router.delete('/:id', destroyOne);
+
 module.exports = router;
