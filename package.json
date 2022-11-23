@@ -7,7 +7,8 @@
     "dev": "nodemon ./bin/www",
     "test": "mocha",
     "test-city": "mocha ./test/city-test.js",
-    "test-date-city": "mocha ./test/city-date-test.js"
+    "test-date-city": "mocha ./test/city-date-test.js",
+    "test-hotel": "mocha ./test/hotel-test.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.0",
