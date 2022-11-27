@@ -45,7 +45,7 @@ const accountVerificationEmail = async (mail, code) => {
     const mailOptions = {
         from: GOOGLE_USER,
         to: mail,
-        subject: 'Verify your new account in Amazing Events',
+        subject: 'Verify your new account in MyTinerary',
         html: getEmailBody({ mail,host:BACK_URL, code })
     }
     await transport.sendMail(mailOptions, (error, response) => {
