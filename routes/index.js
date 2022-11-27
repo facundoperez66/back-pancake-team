@@ -11,9 +11,9 @@ let show = require ('./show')
 
 router.use("/cities", city);
 router.use('/itineraries', itinerary)
-router.use('/user', user)
+
 router.use('/hotels',hotel)
 router.use('/shows', show)
-
+router.use('/auth', user);
 
 module.exports = router;
