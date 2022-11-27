@@ -32,8 +32,7 @@ const schema = joi.object({
 
 
     
-    userId: joi
-        .string()
+    userId: joi.string()
         .required()
         .min(24)
         .max(24)
@@ -43,8 +42,7 @@ const schema = joi.object({
             'string.empty': 'The user ID field is empty',
         }),
          
-    cityId: joi
-    .string()
+    cityId: joi.string()
     .required()
     .min(24)
     .max(24)
