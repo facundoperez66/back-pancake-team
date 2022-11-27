@@ -2,7 +2,7 @@ const User = require('../models/User');
 const crypto = require('crypto');
 const bcryptjs = require('bcryptjs')
 const accountVerificationEmail = require('./accountEmailVerification');
-const { userSignedUp, userNotFound } = require('../config/responses');
+const { userSignedUp, userNotFound, userSignedOut } = require('../config/responses');
 
 
 const controller = { 
@@ -35,7 +35,73 @@ verify: async (req, res, next) => {
     }catch(error){
         next(error)
     }
+},
+
+logout: async (req, res, next) => {
+    let { user } = req;
+    try{
+        let userLogout = await User.findOneAndUpdate({ mail: user.email }, { online: false }, { new: true })
+        return userSignedOutResponse(req, res)
+    }catch(error){
+        next(error)
+    }
+},
+
+signIn: async(req,res,next) => {
+    const user = req
+    const password = req
+   
+    try {
+        const verifypass = bcryptjs.compareSync(password, user.password)
+        
+        if(verifypass){
+            await User.findOneAndUpdate({email: user.email},{_id: user.id},{online: true})
+        
+        const token = jwt.sign({
+           name: user.name,
+           photo: user.photo,
+           online: user.online, 
+        },
+        process.env.KEY_JWT)
+        
+       return res.status(200).json({
+         response: {user, token},
+         success: true,
+         message: 'Welcome' + user.name
+       })
+    }
+       return invalidCredentials()
+    
+    }catch(error) {
+        next(error)
+    }
+},
+
+signInToken: async(req, res, next) => {
+    let {user} = req
+    try{
+        return res.json({
+            response:{user}, 
+            success: true,
+            messagge: 'Welcome' + user.name
+        })
+    } catch (error){
+        next(error)
+    }
+} 
+
+
+
+
+
+
+
 }
-}
+
+
+
+
+
+
 
 module.exports = controller;
