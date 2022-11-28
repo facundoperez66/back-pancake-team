@@ -8,15 +8,14 @@ describe('hotels',function(done){
     
     it('retorna un error cuando el filto no encuentra un hotel',function(done){
         request(app)
-        .get('/hotels/636fe5cd55d86e11bfaebc4a')
-        .expect(404)
-        .end(function (err, res) {
-            if (err) return done(err);
-            done();
-        });
-
-    })
-    it('the field capacity is a number', function(done){
+            .get(`/hotels/637084d4caa81e856ac3012d`)
+            .expect(404)
+            .end(function (err, res) {
+                if (err) return done(err);
+                done();
+            });
+    }),
+    it('The field capacity is a number', function (done) {
         request(app)
         .post('/api/hotels')
         .send({

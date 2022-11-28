@@ -1,45 +1,48 @@
-const joi = require("joi")
+const joi = require(`joi`)
 
-const schema = joi.object({ 
-    name: joi.string()
+const schema = joi.object({
+    name: joi
+        .string()
         .required()
-        .min(2)
-        .max(40)
+        .min(3)
+        .max(30)
         .messages({
-            "any.required": "The name field is required",
-            "string.empty": "The name field is empty",
-            "string.max": "The name field must be at most 30 characters long",
-            "string.min": "The name field must be at least 3 characters long"
-            
+            "string.required": "the field is required, please enter your name",
+            "string.empty": "you can't leave this field empty",
+            "string.min": "Your name must have at least 3 character",
+            "string.max": "Your name must have a maximum of 50 characters",
+            "string.base": "only letters and numbers are valid"
         }),
-    capacity: joi.number()
-        .required()
-        .messages({
-            "number.required": "The capacity field is required",
-            "number.empty": "The capacity field is empty"
-        }),
-    photo: joi.array()
-        .items(joi
+    photo: joi
+        .array()
+        .items(
+            joi
             .string()
             .uri()
-            )
+        )
         .required()
         .messages({
-            "any.required": "The photo field is required",
-            "string.empty": "The photo field is empty",
-            
+            "string.required": "the field is required, please enter an URL",
+            "string.empty": "you can't leave this field empty",
+            "string.uri": "invalid format for URL"
+        }),
+    capacity: joi
+        .number()
+        .required()
+        .messages({
+            "number.required": "the field is required, please enter the capacity",
+            "number.empty": "you can't leave this field empty",
+            "number.base": "only numbers are valid"
         }),
 
 
     
     userId: joi.string()
         .required()
-        .min(24)
-        .max(24)
         .messages({
-            'string.base': `User ID must be a type of 'text'`,
-            'any.required': 'The user ID field is required',
-            'string.empty': 'The user ID field is empty',
+            "string.required": "the field is required, please enter an ID",
+            "string.empty": "you can't leave this field empty",
+            "string.base": "only letters and numbers are valid"
         }),
          
     cityId: joi.string()
@@ -53,4 +56,4 @@ const schema = joi.object({
     }),
 })
 
-module.exports = schema
+module.exports=schema;

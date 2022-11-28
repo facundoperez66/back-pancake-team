@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../models/User");
 const { userExists } = require("../config/responses");
 
 async function accountAllReadyExistsSignUp(req, res, next) {

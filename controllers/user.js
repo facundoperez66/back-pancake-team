@@ -2,8 +2,8 @@ const User = require('../models/User');
 const crypto = require('crypto');
 const bcryptjs = require('bcryptjs')
 const accountVerificationEmail = require('./accountEmailVerification');
-const { userSignedUp, userNotFound, userSignedOut } = require('../config/responses');
-
+const { userSignedUp, userNotFound, invalidCredentials } = require('../config/responses');
+const jwt = require('jsonwebtoken')
 
 const controller = { 
     register: async (req, res, next) => {
@@ -48,8 +48,8 @@ logout: async (req, res, next) => {
 },
 
 signIn: async(req,res,next) => {
-    const user = req
-    const password = req
+    const {user} = req
+    const {password} = req.body
    
     try {
         const verifypass = bcryptjs.compareSync(password, user.password)
@@ -62,7 +62,10 @@ signIn: async(req,res,next) => {
            photo: user.photo,
            online: user.online, 
         },
-        process.env.KEY_JWT)
+        process.env.KEY_JWT,
+        {expiresIn: 60 * 6 * 24}
+
+        )
         
        return res.status(200).json({
          response: {user, token},
