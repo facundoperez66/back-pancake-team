@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const bcryptjs = require('bcryptjs')
 const accountVerificationEmail = require('./accountEmailVerification');
 const { userSignedUp, userNotFound, userSignedOut } = require('../config/responses');
-
+const jwt = require('jsonwebtoken')
 
 const controller = { 
     register: async (req, res, next) => {
