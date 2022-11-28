@@ -18,6 +18,7 @@ describe('Cities', function (done) {
                 done();
             });
     })
+
     it('verify that the user sends a string in the name field when creating a city', function (done) {
         request(app)
             .post(`/api/cities/`)
@@ -36,6 +37,7 @@ describe('Cities', function (done) {
                 done();
             });
     })
+
     it('Verify that returns success false when unable to create a city', function (done) {
         request(app)
             .post(`/api/cities/`)
