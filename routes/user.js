@@ -13,7 +13,7 @@ const mustSignIn1 = require('../middlewares/mustSignIn');
 
 router.post('/sign-up',validator(schema),accountAllReadyExistsSignUp, register);
 router.get('/verify/:code', verify);
-router.post('/sign-in',validator(schemaSignIn),accountAllReadyExistsSignIn, accountHasBeenVerified, signIn)
+router.post('/sign-in',validator(schemaSignIn),accountAllReadyExistsSignIn, accountHasBeenVerified, signIn);
 router.post('/token', passport.authenticate('jwt', {session: false}), mustSignIn1, signInToken)
 
 
