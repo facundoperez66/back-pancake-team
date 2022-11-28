@@ -2,7 +2,7 @@ const User = require('../models/User');
 const crypto = require('crypto');
 const bcryptjs = require('bcryptjs')
 const accountVerificationEmail = require('./accountEmailVerification');
-const { userSignedUp, userNotFound, userSignedOut } = require('../config/responses');
+const { userSignedUp, userNotFound, invalidCredentials } = require('../config/responses');
 const jwt = require('jsonwebtoken')
 
 const controller = { 
@@ -47,43 +47,45 @@ logout: async (req, res, next) => {
     }
 },
 
-signIn: async(req,res,next) => {
-    const user = req
-    const password = req
-   
-    try {
-        const verifypass = bcryptjs.compareSync(password, user.password)
-        
-        if(verifypass){
-            await User.findOneAndUpdate({email: user.email},{_id: user.id},{online: true})
-        
-        const token = jwt.sign({
-           name: user.name,
-           photo: user.photo,
-           online: user.online, 
-        },
-        process.env.KEY_JWT)
-        
-       return res.status(200).json({
-         response: {user, token},
-         success: true,
-         message: 'Welcome' + user.name
-       })
-    }
-       return invalidCredentials()
-    
-    }catch(error) {
+signIn: async (req, res, next) =>{
+    const {password} = req.body;
+    const {user} = req;
+    try{
+        const verifyPassword = bcryptjs.compareSync(password, user.password)
+        console.log(password)
+        console.log(user.password)
+        if(verifyPassword){
+            await User.findOneAndUpdate({email: user.email},{_id: user.id}, {online:true})
+            const token = jwt.sign(
+                {
+                    name: user.name,
+                    photo: user.photo,
+                    online: user.online
+                },
+            process.env.KEY_JWT,
+            {expiresIn: 60 * 6 * 24}
+            )
+            return res.status(200).json({
+                response: {user, token},
+                success: true,
+                message:'Hi ' + user.name + ', we are happy to see you again'
+            })
+        }
+        return invalidCredentials(req,res)
+    } catch(error){
         next(error)
     }
 },
 
 signInToken: async(req, res, next) => {
-    let {user} = req
+    let {user} = req;
     try{
         return res.json({
-            response:{user}, 
+            response:{
+                user
+            }, 
             success: true,
-            messagge: 'Welcome' + user.name
+            messagge: `Welcome ${user.name}`
         })
     } catch (error){
         next(error)

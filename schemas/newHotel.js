@@ -34,22 +34,26 @@ const schema = joi.object({
             "number.empty": "you can't leave this field empty",
             "number.base": "only numbers are valid"
         }),
-    cityId: joi
-        .string()
+
+
+    
+    userId: joi.string()
         .required()
         .messages({
             "string.required": "the field is required, please enter an ID",
             "string.empty": "you can't leave this field empty",
             "string.base": "only letters and numbers are valid"
         }),
-    userId: joi
-        .string()
-        .required()
-        .messages({
-            "string.required": "the field is required, please enter an ID",
-            "string.empty": "you can't leave this field empty",
-            "string.base": "only letters and numbers are valid"
-        })
+         
+    cityId: joi.string()
+    .required()
+    .min(24)
+    .max(24)
+    .messages({
+        'string.base': `User ID must be a type of 'text'`,
+        'any.required': 'The user ID field is required',
+        'string.empty': 'The user ID field is empty',
+    }),
 })
 
 module.exports=schema;
