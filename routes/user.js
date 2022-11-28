@@ -6,16 +6,16 @@ const schemaSignIn = require('../schemas/signin')
 const accountAllReadyExistsSignIn = require('../middlewares/accountAllReadyExistsSignIn')
 const accountHasBeenVerified = require('../middlewares/accountHasBeenVerified')
 const passport = require('../config/passport')
-const { register, verify, signIn, signInToken } = require('../controllers/user');
-const mustSignIn = require('../middlewares/mustSignIn');
+const { register, verify, signIn, signInToken, logout } = require('../controllers/user');
+const mustSignIn1 = require('../middlewares/mustSignIn');
 
 
 
 router.post('/sign-up',validator(schema),accountAllReadyExistsSignUp, register);
+router.post('/sign-in',validator(schemaSignIn),accountAllReadyExistsSignIn, accountHasBeenVerified, signIn);
+router.post('/sign-out', passport.authenticate('jwt', { session: false }), logout)
 router.get('/verify/:code', verify);
-router.post('/sign-in',validator(schemaSignIn),accountAllReadyExistsSignIn, accountHasBeenVerified, signIn)
-router.post('/token', passport.authenticate('jwt', {session: false}), mustSignIn, signInToken)
-
+router.post('/token', passport.authenticate('jwt', { session: false }), mustSignIn1, signInToken)
 
 
 
