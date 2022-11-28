@@ -18,7 +18,7 @@ describe('Cities', function (done) {
                 done();
             });
     })
-    describe('POST /hotels', function () {
+describe('POST /hotels', function () {
 
         it('capacity should be a number', function (done) {
             request(app)

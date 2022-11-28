@@ -1,11 +1,11 @@
-const mustSignIn = require('../config/responses')
+const mustSignInResponse = require('../config/responses')
 
-function mustSignIn1(req, res, next) {
-    if(req.user){
-        return next()
-
+function mustSignIn(req, res, next) {
+    if(req.user) {
+        return next();
     }
+
     return mustSignIn()
 }
 
-module.exports = mustSignIn1
+module.exports = mustSignIn
