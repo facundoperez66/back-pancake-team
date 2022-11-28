@@ -15,7 +15,9 @@ router.post('/sign-up',validator(schema),accountAllReadyExistsSignUp, register);
 router.post('/sign-in',validator(schemaSignIn),accountAllReadyExistsSignIn, accountHasBeenVerified, signIn);
 router.post('/sign-out', passport.authenticate('jwt', { session: false }), logout)
 router.get('/verify/:code', verify);
+
 router.post('/token', passport.authenticate('jwt', { session: false }), mustSignIn1, signInToken)
+
 
 
 
