@@ -47,35 +47,32 @@ logout: async (req, res, next) => {
     }
 },
 
-signIn: async(req,res,next) => {
-    const {user} = req
-    const {password} = req.body
-   
+signIn: async (req, res, next) => {
+    let { password } = req.body;
+    let { user } = req;
     try {
-        const verifypass = bcryptjs.compareSync(password, user.password)
-        
-        if(verifypass){
-            await User.findOneAndUpdate({email: user.email},{_id: user.id},{online: true})
-        
-        const token = jwt.sign({
-           name: user.name,
-           photo: user.photo,
-           online: user.online, 
-        },
-        process.env.KEY_JWT,
-        {expiresIn: 60 * 6 * 24}
-
-        )
-        
-       return res.status(200).json({
-         response: {user, token},
-         success: true,
-         message: 'Welcome' + user.name
-       })
-    }
-       return invalidCredentials()
-    
-    }catch(error) {
+        const verifyPassword = bcryptjs.compareSync(password, user.password)
+        if (verifyPassword) {
+            await User.findOneAndUpdate({ mail: user.email }, { online: true }, { new: true })
+            let token = jwt.sign(
+                { id: user.id },
+                process.env.KEY_JWT,
+                { expiresIn: 60 * 60 * 24 }
+            )
+            user = {
+                name: user.name,
+                email: user.email,
+                photo: user.photo,
+                role: user.role,
+            }
+            return res.status(200).json({
+                response: { user, token },
+                success: true,
+                message: 'Hi ' + user.name 
+            })
+        }
+        return invalidCredentials(req, res)
+    } catch (error) {
         next(error)
     }
 },
