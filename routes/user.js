@@ -1,26 +1,24 @@
 const router = require('express').Router();
 const schema = require('../schemas/user');
-const validator = require('../middlewares/validator');
-const accountAllReadyExistsSignUp = require('../middlewares/accountAllReadyExistsSignUp')
-const schemaSignIn = require('../schemas/signin')
-const accountAllReadyExistsSignIn = require('../middlewares/accountAllReadyExistsSignIn')
-const accountHasBeenVerified = require('../middlewares/accountHasBeenVerified')
+const schemaSignin = require('../schemas/signin');
 const passport = require('../config/passport')
-const { register, verify, signIn, signInToken, logout } = require('../controllers/user');
-const mustSignIn1 = require('../middlewares/mustSignIn');
+const validator = require('../middlewares/validator');
+const accountExistsSignUp = require('../middlewares/accountExistsSignUp')
+const accountExistsSignIn = require('../middlewares/accountExistsSignIn')
+const accountHasBeenVerified = require('../middlewares/accountHasBeenVerified')
+const mustSignIn = require('../middlewares/mustSignIn')
+const { register, verify, login, loginWithToken, logout, readOne, update } = require('../controllers/user');
 
-
-
-router.post('/sign-up',validator(schema),accountAllReadyExistsSignUp, register);
-router.post('/sign-in',validator(schemaSignIn),accountAllReadyExistsSignIn, accountHasBeenVerified, signIn);
+router.post('/sign-up',validator(schema),accountExistsSignUp, register);
+router.post('/sign-in', validator(schemaSignin), accountExistsSignIn, accountHasBeenVerified, login)
 router.post('/sign-out', passport.authenticate('jwt', { session: false }), logout)
+
 router.get('/verify/:code', verify);
-router.post('/token', passport.authenticate('jwt', { session: false }), mustSignIn1, signInToken)
+router.post('/token', passport.authenticate('jwt', { session: false }), mustSignIn, loginWithToken)
 
 
-
-
-
-
+router.route('/me/:id')
+    .get(readOne)
+    .patch(update)
 
 module.exports = router;

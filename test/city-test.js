@@ -50,7 +50,7 @@ describe('Cities', function (done) {
     })
 
     it("Delete a city successfully", function (done) {
-        token = 'ya29.a0AeTM1icu-VfS6iuqLHuqi8G-n1sadVgygBq54QEeKnz5uF5tUvkUvJO9YuK7GoA_192oZCpovEF-2M0tZAJTDhgLPZs7t_ZDlKvQKOSlaGttDP76dhr9S2ZpAb1ADVdEWK_13o76-MY9pC0Uyq7ecKmwN67BaCgYKAaYSARMSFQHWtWOmXWEJWHfKlCP8D25SWi2zJA0163'
+        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzODc3MmY3MGY4OWQ0MGQ4ZGUxZDcxMyIsImlhdCI6MTY2OTkyMjY1MiwiZXhwIjoxNjcwMDA5MDUyfQ.y0f3bLpfDxmR6EpocRVsYoGdBuHvAJZh07j0q5C0p_0'
         idCity = '637084d4caa81e856ac3012f'
         request(app)
             .delete(`/api/cities/${idCity}`)

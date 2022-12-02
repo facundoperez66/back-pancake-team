@@ -1,58 +1,73 @@
-function userAllReadyExists(req,res) {
+function userExistsResponse(req,res) {
     return res.status(400).json({
         success: false,
         message: 'user already exists'
     })
 }
 
-function userSignedUp(req,res) {
+function userSignedUpResponse(req,res) {
     return res.status(201).json({
         success: true,
         message: 'user signed up'
     })
 }
 
-function userSignedOut(req,res) {
+function userSignedOutResponse(req,res) {
     return res.status(201).json({
         success: true,
         message: 'user signed out'
     })
 }
 
-function userNotFound(req,res) {
+function userNotFoundResponse(req,res) {
     return res.status(404).json({
         success: false,
         message: 'user not found'
     })
 }
 
-function mustSignIn(req,res) {
+function mustSignInResponse(req,res) {
     return res.status(400).json({
         success: false,
         message: 'sign in please!'
     })
 }
 
-function invalidCredentials(req,res) {
+function invalidCredentialsResponse(req,res) {
     return res.status(401).json({
         success: false,
         message: 'email or password incorrect'
     })
 }
 
-function verify(req,res) {
+function verifyResponse(req,res) {
     return res.status(401).json({
         success: false,
         message: 'Please, verify your email account and try again'
     })
 }
+function mustBeTheOwner(req, res) {
+    return res.status(401).json({
+        success: false,
+        message: "You must be the owner to carry out this operation",
+    });
+}
+
+function activityNotFound(req, res) {
+    return res.status(404).json({
+        success: false,
+        message: "Couldn't find the activity",
+    });
+}
 
 module.exports = {
-    userSignedUp,
-    userAllReadyExists,
-    userNotFound,
-    userSignedOut,
-    mustSignIn,
-    invalidCredentials,
-    verify
+    userSignedUpResponse,
+    userExistsResponse,
+    userNotFoundResponse,
+    userSignedOutResponse,
+    mustSignInResponse,
+    invalidCredentialsResponse,
+    verifyResponse,
+    mustBeTheOwner,
+    activityNotFound
 }

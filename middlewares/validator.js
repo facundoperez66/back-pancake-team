@@ -1,18 +1,14 @@
 const validator = (schema) => [
     (req, res, next) => {
-        const data = schema.validate(req.body, { abortEarly: false })
-
+        const data = schema.validate(req.body, { abortEarly: false });
         if (data.error) {
-            console.log(data.error.details);
-            
-            return res.status(200).json({
+            return res.status(400).json({
                 success: false,
-                message: data.error.details.map(error => error.message)
-
+                message: data.error.details.map(error => error.message),
             })
         }
-        next()
+        next();
     }
 ]
 
-module.exports = validator
+module.exports = validator;

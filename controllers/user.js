@@ -1,11 +1,13 @@
 const User = require('../models/User');
 const crypto = require('crypto');
 const bcryptjs = require('bcryptjs')
-const accountVerificationEmail = require('./accountEmailVerification');
-const { userSignedUp, userNotFound, invalidCredentials, userSignedOut } = require('../config/responses');
+const accountVerificationEmail = require('./accountVerificationEmail');
+const { userSignedUpResponse, userNotFoundResponse, invalidCredentialsResponse, userSignedOutResponse } = require('../config/responses');
 const jwt = require('jsonwebtoken')
 
+
 const controller = {
+
     register: async (req, res, next) => {
         let { name, lastName, photo, age, email, password } = req.body;
         let role = 'user';
@@ -16,7 +18,7 @@ const controller = {
         try {
             await User.create({ name, lastName, role, photo, age, email, password, code, verified, logged })
             await accountVerificationEmail(email, code)
-            return userSignedUp(req, res)
+            return userSignedUpResponse(req, res)
         } catch (error) {
             console.log(error)
         }
@@ -30,24 +32,14 @@ const controller = {
             if (user) {
                 return res.redirect('http://localhost:3000/')
             }
-            return userNotFound(req, res)
+            return userNotFoundResponse(req, res)
 
         } catch (error) {
             next(error)
         }
     },
 
-    logout: async (req, res, next) => {
-        let { user } = req;
-        try{
-            let userLogout = await User.findOneAndUpdate({ mail: user.email }, { online: false }, { new: true })
-            return userSignedOut(req, res)
-        }catch(error){
-            next(error)
-        }
-    },
-
-    signIn: async (req, res, next) => {
+    login: async (req, res, next) => {
         let { password } = req.body;
         let { user } = req;
         try {
@@ -58,8 +50,10 @@ const controller = {
                     { id: user.id },
                     process.env.KEY_JWT,
                     { expiresIn: 60 * 60 * 24 }
+
                 )
                 user = {
+                    id: user.id,
                     name: user.name,
                     email: user.email,
                     photo: user.photo,
@@ -68,16 +62,17 @@ const controller = {
                 return res.status(200).json({
                     response: { user, token },
                     success: true,
-                    message: 'Hi ' + user.name 
+                    message: `Hello ${user.name}, welcome!`
                 })
             }
-            return invalidCredentials(req, res)
+            return invalidCredentialsResponse(req, res)
         } catch (error) {
             next(error)
         }
     },
 
-    signInToken: async (req, res, next) => {
+    loginWithToken: async (req, res, next) => {
+
         let { user } = req;
         try {
             return res.json({
@@ -85,29 +80,75 @@ const controller = {
                     user
                 },
                 success: true,
-                messagge: `Welcome ${user.name}`
+                message: `Welcome ${user.name}`
             })
+
         } catch (error) {
             next(error)
         }
     },
 
-    
+    logout: async (req, res, next) => {
+        let { user } = req;
+        try {
+            let userLogout = await User.findOneAndUpdate({ mail: user.email }, { online: false }, { new: true })
+            return userSignedOutResponse(req, res)
+        } catch (error) {
+            next(error)
+        }
+
+    },
+
+    readOne: async (req, res, next) => {
+        let id = req.params.id;
+        try {
+            let user = await User.findById({ _id: id })
+            if (user) {
+                res.status(200).json({
+                    success: true,
+                    message: 'the user was found successfully!.',
+                    data: user,
+                })
+            } else {
+                res.status(404).json({
+                    success: false,
+                    message: 'the user was not found.',
+                })
+            }
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    update: async (req, res, next) => {
+        let id = req.params.id;
+        if (req.body.password) {
+            let { password } = req.body;
+            password = bcryptjs.hashSync(password, 10);
+            req.body.password = password;
+        }
 
 
+        try {
+            let user = await User.findOneAndUpdate({ _id: id }, req.body, { new: true });
 
-
-
-
-
-
+            if (user) {
+                res.status(200).json({
+                    success: true,
+                    message: "The user was successfully modified!",
+                    data: user,
+                });
+            } else {
+                res.status(404).json({
+                    success: false,
+                    message: "The user was not found",
+                });
+            }
+        } catch (error) {
+            next(error)
+        }
+    },
 
 }
-
-
-
-
-
-
 
 module.exports = controller;

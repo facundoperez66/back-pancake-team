@@ -1,13 +1,15 @@
-const Show = require('../models/Show')
+const Show = require('../models/Show');
 
 const controller = {
+
     create: async (req, res) => {
         try {
-            let new_show = await Show.create(req.body)
+            let new_show = await Show.create(req.body);
             res.status(201).json({
                 id: new_show._id,
                 success: true,
-                message: "show successfully created"
+                message: "show successfully created",
+                new_show,
             })
         } catch (error) {
             res.status(400).json({
@@ -56,20 +58,29 @@ const controller = {
     },
 
     update: async (req, res) => {
+        
         let { id } = req.params;
 
         try {
-            let oneShow = await Show.findOneAndUpdate({ _id: id }, req.body, { new: true });
-            if (oneShow) {
-                res.status(200).json({
-                    success: true,
-                    message: 'Show succesfully updated',
-                    data: oneShow,
-                });
+            let oneShowFind = await Show.findById(id)
+            if (oneShowFind.userId.equals(req.user.id)) {
+                let oneShow = await Show.findOneAndUpdate({ _id: id }, req.body, { new: true });
+                if (oneShow) {
+                    res.status(200).json({
+                        success: true,
+                        message: 'Show succesfully updated',
+                        data: oneShow,
+                    });
+                } else {
+                    res.status(404).json({
+                        success: false,
+                        message: 'Show not found',
+                    });
+                }
             } else {
-                res.status(404).json({
+                res.status(401).json({
                     success: false,
-                    message: 'Show not found',
+                    message: 'Unauthorized',
                 });
             }
         } catch (error) {

@@ -30,9 +30,9 @@ function getTransport(client) {
 function getEmailBody({mail, host, code}) {
     return `
         <div>
-            <h1>Welcome, ${mail}</h1>            
+            <h1>Hola, ${mail}</h1>            
             <a href="${host}auth/verify/${code}">
-                Verify your account.
+                Verify my account.
             </a>
         </div>
     `
