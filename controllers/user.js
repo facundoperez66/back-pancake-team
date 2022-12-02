@@ -45,24 +45,24 @@ const controller = {
         try {
             const verifyPassword = bcryptjs.compareSync(password, user.password)
             if (verifyPassword) {
-                await User.findOneAndUpdate({ mail: user.email }, { online: true }, { new: true })
+                const userDb = await User.findOneAndUpdate({ _id: user.id }, { logged: true }, { new: true })
                 let token = jwt.sign(
-                    { id: user.id },
+                    {
+                        id: userDb._id,
+                        name: userDb.name,
+                        photo: userDb.photo,
+                        logged: userDb.logged,
+                        role: userDb.role,
+                    },
                     process.env.KEY_JWT,
                     { expiresIn: 60 * 60 * 24 }
 
                 )
-                user = {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    photo: user.photo,
-                    role: user.role,
-                }
+
                 return res.status(200).json({
                     response: { user, token },
                     success: true,
-                    message: `Hello ${user.name}, welcome!`
+                    message: `Hello ${userDb.name}, welcome!`
                 })
             }
             return invalidCredentialsResponse(req, res)
@@ -77,7 +77,13 @@ const controller = {
         try {
             return res.json({
                 response: {
-                    user
+                    user: {
+                        id: user.id,
+                        name: user.name,
+                        photo: user.photo,
+                        logged: user.logged,
+                        role: user.role,
+                    },
                 },
                 success: true,
                 message: `Welcome ${user.name}`
@@ -89,14 +95,19 @@ const controller = {
     },
 
     logout: async (req, res, next) => {
-        let { user } = req;
-        try {
-            let userLogout = await User.findOneAndUpdate({ mail: user.email }, { online: false }, { new: true })
-            return userSignedOutResponse(req, res)
-        } catch (error) {
-            next(error)
-        }
+        const { id } = req.user;
 
+        try {
+            let user = await User.findOneAndUpdate(
+                { _id: id },
+                { logged: false },
+                { new: true }
+            );
+
+            return userSignedOutResponse(req, res);
+        } catch (error) {
+            next(error);
+        }
     },
 
     readOne: async (req, res, next) => {
