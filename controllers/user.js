@@ -45,14 +45,14 @@ const controller = {
         try {
             const verifyPassword = bcryptjs.compareSync(password, user.password)
             if (verifyPassword) {
-                const userDb = await User.findOneAndUpdate({ _id: user.id }, { logged: true }, { new: true })
+                const user1 = await User.findOneAndUpdate({ _id: user.id }, { logged: true }, { new: true })
                 let token = jwt.sign(
                     {
-                        id: userDb._id,
-                        name: userDb.name,
-                        photo: userDb.photo,
-                        logged: userDb.logged,
-                        role: userDb.role,
+                        id: user1._id,
+                        name: user1.name,
+                        photo: user1.photo,
+                        logged: user1.logged,
+                        role: user1.role,
                     },
                     process.env.KEY_JWT,
                     { expiresIn: 60 * 60 * 24 }
@@ -62,7 +62,7 @@ const controller = {
                 return res.status(200).json({
                     response: { user, token },
                     success: true,
-                    message: `Hello ${userDb.name}, welcome!`
+                    message: `Hello ${user1.name}, welcome!`
                 })
             }
             return invalidCredentialsResponse(req, res)
@@ -70,6 +70,7 @@ const controller = {
             next(error)
         }
     },
+
 
     loginWithToken: async (req, res, next) => {
 
